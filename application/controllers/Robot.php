@@ -26,6 +26,7 @@ class Robot extends CI_Controller {
             $startDate += 86400;
             // sleep(rand(1,10));
         }
+        echo PHP_EOL.'---- Done ----'.PHP_EOL;
     }
 
     public function _getData()
