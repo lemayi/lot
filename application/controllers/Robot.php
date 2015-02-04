@@ -18,7 +18,7 @@ class Robot extends CI_Controller {
         $startDate  = mktime(0,0,0,9,3,2010);
         // $startDate  = mktime(0,0,0,5,13,2012);
         $endDate    = time();
-        // $endDate    = mktime(0,0,0,5,13,2012);
+        // $endDate    = mktime(0,0,0,9,3,2010);
         while($startDate <= $endDate){
             echo date('Y-m-d', $startDate). PHP_EOL;
             $this->url = "http://www.okooo.com/jingcai/". date('Y-m-d', $startDate);
