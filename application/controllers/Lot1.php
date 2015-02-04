@@ -20,6 +20,9 @@ class Lot1 extends CI_Controller {
     public function index()
     {
         $query  = $this->_getData();
+        // var_dump($this->db->last_query());die;
+        $no_wins = array();
+        $no_win  = 0;
         foreach($query->result() as $row){
             $per_pay = 0;
             $per_get = 0;
@@ -39,11 +42,18 @@ class Lot1 extends CI_Controller {
                 $this->num_3++;
                 $per_get = $odds_3_pay*$odds_3;
                 $odds_rs = $odds_3;
+
+                if($no_win) $no_wins[] = $no_win;
+                $no_win = 0;
             }else if(1 == $result){
                 $this->num_1++;
                 $per_get = $odds_1_pay*$odds_1;
                 $odds_rs = $odds_1;
+
+                if($no_win) $no_wins[] = $no_win;
+                $no_win = 0;
             }else{
+                $no_win++;
                 $this->num_0++;
                 $per_get = 0;
                 $odds_rs = $odds_0;
@@ -62,22 +72,26 @@ class Lot1 extends CI_Controller {
             echo '<br>';
         }
 
+        sort($no_wins);
+
         echo '<p><b>Total</b><br>';
         echo 'Num 3: '. $this->num_3.'<br>';
         echo 'Num 1: '. $this->num_1.'<br>';
         echo 'Num 0: '. $this->num_0.'<br>';
         echo 'Total Pay: '. $this->total_pay.'<br>';
         echo 'Total Get: '. $this->total_get.'<br>';
+        echo 'No Win Max: '. end($no_wins).'<br>';
         echo '</p>';
     }
 
     private function _getData()
     {
         $this->db->where('odds_3 >', 1.7);
-        $this->db->where('odds_3 <=', 2);
+        // $this->db->where('odds_3 <=', 2.5);
         $this->db->where('odds_1 !=', 0.00);
         $this->db->where('odds_0 !=', 0.00);
-        $this->db->where('odds_3 >', 'odds_0'); 
+        $where = "odds_3 < odds_0";
+        $this->db->where($where); 
         return $this->db->get('shengfuping');
     }
 }
